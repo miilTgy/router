@@ -60,8 +60,52 @@ RouteNetAsTree(net, current_edge_costs):
 
     while the unconnected set is not empty:
         Choose one unconnected pin and one connection target on the current tree/frontier
-        Run A* from target pin to tree/frontier using negotiated-congestion edge costs
+        Run single-source to multiple-target A* from target pin to tree/frontier using negotiated-congestion edge costs
         Merge the returned path into the routed tree
         Update tree frontier
         Remove the connected pin from the unconnected set
+```
+
+### Single-source to multiple-target A* Search 算法说明
+
+```
+AStarToTree(start, tree_points):
+    open = min-heap ordered by f
+    g[start] = 0
+    parent[start] = NIL
+    push start with f = HeuristicToTree(start, tree_points)
+
+    closed = empty set
+
+    while open is not empty:
+        u = pop minimum-f node
+
+        if u is already in closed:
+            continue
+        add u to closed
+
+        if u is in tree_points:
+            return ReconstructPath(parent, u), u
+            // u 就是此次接入树的连接点
+
+        for each neighbor v of u:
+            if v is blocked:
+                continue
+
+            tentative_g = g[u] + cost(edge(u, v))
+
+            if v not visited before OR tentative_g < g[v]:
+                g[v] = tentative_g
+                parent[v] = u
+                f[v] = g[v] + HeuristicToTree(v, tree_points)
+                push v into open
+
+    return FAIL
+
+HeuristicToTree(p, tree_points):
+    best = +INF
+    for each t in tree_points:
+        d = abs(p.r - t.r) + abs(p.c - t.c)
+        best = min(best, d)
+    return best
 ```
