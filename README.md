@@ -15,10 +15,11 @@ Output:
     result file
 main:
     Parse input sample
-    Construct implicit grid graph
-    Mark blocked grid cells as unavailable
-    Initialize edge capacity, edge usage, overflow, and history-cost tables
-    Build net list
+    Initialize routing database from Problem
+        - construct implicit grid graph view
+        - mark blocked grid cells as unavailable through Problem.blocked
+        - initialize edge usage and negotiated-congestion cost state
+        - validate and expose net list from Problem.nets
 
     // Initial routing
     Determine routing order

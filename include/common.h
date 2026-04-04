@@ -36,3 +36,25 @@ struct Problem {
 
     std::vector<uint8_t> blocked;
 };
+
+enum class Dir : uint8_t {
+    kUp = 0,
+    kDown = 1,
+    kLeft = 2,
+    kRight = 3,
+};
+
+struct EdgeState {
+    int usage = 0;
+    double base_cost = 1.0;
+    double present_cost = 1.0;
+    double history_cost = 1.0;
+};
+
+struct RoutingDB {
+    // Problem must outlive RoutingDB because runtime state references immutable input.
+    const Problem* problem = nullptr;
+
+    std::vector<EdgeState> horizontal_edges;
+    std::vector<EdgeState> vertical_edges;
+};

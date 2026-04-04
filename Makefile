@@ -1,8 +1,8 @@
 CXX := g++
-CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic -Iinclude
+CXXFLAGS := -std=c++17 -Wall -Wextra -Wpedantic -O3 -Iinclude
 
 TARGET := router
-SOURCES := src/main.cc src/parser.cc
+SOURCES := src/main.cc src/parser.cc src/initializer.cc
 
 .PHONY: all run clean
 
