@@ -38,11 +38,12 @@ CMakeFiles/
 CMakeCache.txt
 cmake_install.cmake
 
-# Input files
-samples/
-
 # Output files
 *.txt
 *.png
 *.jpg
 *.jpeg
+
+# Input files
+!samples/*.txt
+
