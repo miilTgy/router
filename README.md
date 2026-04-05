@@ -70,6 +70,11 @@ RouteNetAsTree(net, current_edge_costs):
         Remove the connected pin from the unconnected set
 ```
 
+### victim nets 定义
+
+1. overflow 的线
+2. detour 严重的线
+
 ### Single-source to multiple-target A* Search 算法说明
 
 ```
