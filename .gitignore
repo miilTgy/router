@@ -13,6 +13,7 @@
 
 # Generated binaries / symlinks
 router
+evaluate
 
 # Logs and temp files
 *.log
@@ -42,3 +43,6 @@ samples/
 
 # Output files
 *.txt
+*.png
+*.jpg
+*.jpeg
