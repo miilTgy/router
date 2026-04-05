@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -51,10 +52,34 @@ struct EdgeState {
     double history_cost = 1.0;
 };
 
+struct PathSearchResult {
+    bool success = false;
+    Point attach_point{-1, -1};
+    std::vector<Point> path;
+    double path_cost = 0.0;
+};
+
+struct RoutedTree {
+    int net_id = -1;
+    std::string net_name;
+    std::set<Point> tree_points;
+    std::vector<std::vector<Point>> branches;
+};
+
+struct RoutingResult {
+    std::vector<RoutedTree> routed_nets;
+    int total_wirelength = 0;
+    int total_overflow = 0;
+};
+
+using NetsToRoute = std::set<int>;
+
 struct RoutingDB {
     // Problem must outlive RoutingDB because runtime state references immutable input.
     const Problem* problem = nullptr;
 
     std::vector<EdgeState> horizontal_edges;
     std::vector<EdgeState> vertical_edges;
+    std::vector<int> working_horizontal_usage;
+    std::vector<int> working_vertical_usage;
 };

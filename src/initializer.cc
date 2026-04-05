@@ -144,6 +144,8 @@ RoutingDB InitializeRoutingDB(const Problem& problem) {
                                static_cast<std::size_t>(std::max(0, problem.cols - 1)));
     db.vertical_edges.resize(static_cast<std::size_t>(std::max(0, problem.rows - 1)) *
                              static_cast<std::size_t>(problem.cols));
+    db.working_horizontal_usage.assign(db.horizontal_edges.size(), 0);
+    db.working_vertical_usage.assign(db.vertical_edges.size(), 0);
 
     EmitDebugSummary(db);
     return db;
