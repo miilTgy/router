@@ -4,6 +4,7 @@
 #include "initializer.h"
 #include "parser.h"
 #include "router.h"
+#include "writer.h"
 
 int main(int argc, char* argv[]) {
     const std::string input_file =
@@ -12,6 +13,7 @@ int main(int argc, char* argv[]) {
     SetParserDebug(true);
     SetInitializerDebug(true);
     SetRouterDebug(true);
+    SetWriterDebug(true);
     const Problem problem = ParseInputFile(input_file);
     RoutingDB db = InitializeRoutingDB(problem);
     std::cout << "main.parse_ok file=" << input_file
@@ -25,5 +27,8 @@ int main(int argc, char* argv[]) {
     std::cout << "main.route_ok routed_nets=" << result.routed_nets.size()
               << " wirelength=" << result.total_wirelength
               << " overflow=" << result.total_overflow << "\n";
+    WriteRoutingSolution(input_file, result);
+    const std::string output_file = MakeSolutionFilePath(input_file);
+    std::cout << "main.write_ok output=" << output_file << "\n";
     return 0;
 }
