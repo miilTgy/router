@@ -20,6 +20,7 @@ main:
         - mark blocked grid cells as unavailable through Problem.blocked
         - initialize edge usage and negotiated-congestion cost state
         - validate and expose net list from Problem.nets
+        - reuse common grid / edge helpers from tools.h
 
     // Initial routing
     Determine routing order

@@ -37,10 +37,11 @@ const Problem& problem
 
 请实现一个独立的 initializer 模块，建议新增：
 
+- include/tools.h
 - include/initializer.h
 - src/initializer.cc
 
-必要时可以扩展 include/common.h，加入 initializer 产出的共享数据结构，因为这些结构后续 router / cost update / rip-up-reroute 都会复用。
+必要时可以扩展 include/common.h，加入 initializer 产出的共享数据结构，因为这些结构后续 router / cost update / rip-up-reroute 都会复用。与网格索引、边访问、邻居枚举相关的 inline helper 请放在 `include/tools.h`，不要放在 `common.h` 或 `initializer.h`。
 
 目标是生成一个“初始化后的 routing database（名叫 RoutingDB）”，它不是 `Problem` 的拷贝，而是**在只读 Problem 之上附加的运行时 routing 状态**。也就是说：
 
@@ -146,7 +147,7 @@ struct RoutingDB {
 
 但不要把整份 Problem 再复制进去。
 
-推荐补充一些只读 helper，让后续代码不必到处写 `db.problem->xxx`：
+推荐在 `tools.h` 中补充一些只读 helper，让后续代码不必到处写 `db.problem->xxx`：
 
 ```cpp
 inline int Rows(const RoutingDB& db);
@@ -159,7 +160,7 @@ inline int VerticalCapacity(const RoutingDB& db);
 五、索引规则（必须明确）
 ====================
 
-请统一定义以下索引辅助函数，并放入 initializer.h 或 common.h 中可 inline：
+请统一定义以下索引辅助函数，并放入 `tools.h` 中可 inline：
 
 ```cpp
 inline int CellIndex(int r, int c, int cols) {
@@ -205,14 +206,12 @@ inline bool HasDownEdge(int r, int c, int rows, int cols);
 六、initializer 需要提供的对外 API
 ====================
 
-请实现以下接口，必要时可补充少量 helper，但不要过度设计：
+请实现以下接口，必要时可通过 `tools.h` 补充少量 helper，但不要过度设计：
 
 ```cpp
 #pragma once
 
-#include "common.h"
-
-struct RoutingDB;
+#include "tools.h"
 
 RoutingDB InitializeRoutingDB(const Problem& problem);
 void SetInitializerDebug(bool enabled);
@@ -336,12 +335,16 @@ void SetInitializerDebug(bool enabled);
 请输出完整可编译代码，至少包括：
 
 1. include/common.h
-   - 如有必要，增加 `Dir / EdgeState / RoutingDB / inline helper declaration`
+   - 如有必要，增加 `Dir / EdgeState / RoutingDB`
 
-2. include/initializer.h
+2. include/tools.h
+   - 放所有 routing helper inline 定义
+   - 包括索引函数、边界判断、blocked/edge 访问、邻居与边状态访问 helper
+
+3. include/initializer.h
    - 对外 API 声明
 
-3. src/initializer.cc
+4. src/initializer.cc
    - 完整实现
 
 如果你修改了 common.h，请保留原有 `Point / Net / Problem` 结构，不要破坏 parser 已有代码兼容性。
@@ -397,4 +400,4 @@ void SetInitializerDebug(bool enabled);
 十四、输出格式要求
 ====================
 
-请直接写入这 3 个文件。
+请直接写入这些代码文件，并保证 `include/tools.h` 与 initializer 模块语义一致。
