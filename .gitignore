@@ -43,6 +43,7 @@ cmake_install.cmake
 *.png
 *.jpg
 *.jpeg
+*.docx
 
 # Input files
 !samples/*.txt
