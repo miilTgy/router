@@ -11,10 +11,10 @@ int main(int argc, char* argv[]) {
     const std::string input_file =
         argc > 1 ? argv[1] : std::string("samples/sample0.txt");
 
-    SetParserDebug(true);
-    SetInitializerDebug(true);
-    SetRouterDebug(true);
-    SetWriterDebug(true);
+    // SetParserDebug(true);
+    // SetInitializerDebug(true);
+    // SetRouterDebug(true);
+    // SetWriterDebug(true);
     const Problem problem = ParseInputFile(input_file);
     RoutingDB db = InitializeRoutingDB(problem);
     std::cout << "main.parse_ok file=" << input_file
